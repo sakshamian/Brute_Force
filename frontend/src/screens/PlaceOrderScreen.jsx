@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
@@ -8,15 +8,20 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import Loader from '../components/Loader';
 import { useCreateOrderMutation } from '../slices/ordersApiSlice';
 import { clearCartItems } from '../slices/cartSlice';
+import abi from '../ABI/tokensABI.json';
+import Web3 from 'web3';
+import { selectToken } from '../slices/tokenSlice';
 
 const PlaceOrderScreen = () => {
   const navigate = useNavigate();
 
   const cart = useSelector((state) => state.cart);
+  const currentPoints = useSelector(selectToken);
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
 
   useEffect(() => {
+    // getTokens();
     if (!cart.shippingAddress.address) {
       navigate('/shipping');
     } else if (!cart.paymentMethod) {
@@ -120,6 +125,12 @@ const PlaceOrderScreen = () => {
                 <Row>
                   <Col>Tax</Col>
                   <Col>${cart.taxPrice}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Discount</Col>
+                  <Col>${currentPoints}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>

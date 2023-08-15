@@ -4,9 +4,12 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
+import abi from '../ABI/tokensABI.json';
+import Web3 from 'web3';
 
 import { useLoginMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
+import { setToken } from '../slices/tokenSlice';
 import { toast } from 'react-toastify';
 
 const LoginScreen = () => {
@@ -24,6 +27,25 @@ const LoginScreen = () => {
   const sp = new URLSearchParams(search);
   const redirect = sp.get('redirect') || '/';
 
+  const getTokens = async() => {
+    let account;
+    if(window.ethereum !== "undefined") {
+      const accounts = await window.ethereum.request({method: "eth_requestAccounts"});
+      account = accounts[0];
+      toast.success(`Metamask account ${account} connected successfully `);
+      window.web3 = await new Web3(window.ethereum);
+
+      const smartContractAddress='0x42Dfb1f7FAD81f65a613b60DC525d5FB56cCabf8';
+      const contract = await new window.web3.eth.Contract( abi, smartContractAddress);    
+      const address = '0xF516D9Ff45cA573cf3eeBefb2733E9E5e33895D1';
+      const data = await contract.methods.balanceOf(address).call();
+      console.log("data", data);
+      console.log(Number(data.toString()));
+      dispatch(setToken(Number(data.toString())));
+    } else{
+      toast.error("Metamask is not connected");
+    }
+  }
   useEffect(() => {
     if (userInfo) {
       navigate(redirect);
@@ -35,6 +57,7 @@ const LoginScreen = () => {
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
+      const chk = await getTokens();
       navigate(redirect);
     } catch (err) {
       toast.error(err?.data?.message || err.error);

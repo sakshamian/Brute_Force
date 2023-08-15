@@ -4,7 +4,6 @@ import './assets/styles/bootstrap.custom.css';
 import './assets/styles/index.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -29,9 +28,12 @@ import ProductListScreen from './screens/admin/ProductListScreen';
 import ProductEditScreen from './screens/admin/ProductEditScreen';
 import UserListScreen from './screens/admin/UserListScreen';
 import UserEditScreen from './screens/admin/UserEditScreen';
+import XpressCoin from './screens/Xpresscoin';
+import CoinAct from './screens/XpressCoin-activites'
 import store from './store';
 import { Provider } from 'react-redux';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+import './index.css';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -54,6 +56,8 @@ const router = createBrowserRouter(
         <Route path='/placeorder' element={<PlaceOrderScreen />} />
         <Route path='/order/:id' element={<OrderScreen />} />
         <Route path='/profile' element={<ProfileScreen />} />
+        <Route path="/xpresscoin" element={<XpressCoin />} />
+        <Route path="/Coin-activites" element={<CoinAct />} />
       </Route>
       {/* Admin users */}
       <Route path='' element={<AdminRoute />}>
@@ -73,7 +77,6 @@ const router = createBrowserRouter(
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
     <HelmetProvider>
       <Provider store={store}>
         <PayPalScriptProvider deferLoading={true}>
@@ -81,7 +84,4 @@ root.render(
         </PayPalScriptProvider>
       </Provider>
     </HelmetProvider>
-  </React.StrictMode>
 );
-
-reportWebVitals();

@@ -1,0 +1,144 @@
+main {
+    min-height: 80vh;
+  }
+  
+  h3 {
+    padding: 1rem 0;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+    padding: 1rem 0;
+  }
+  
+  h2 {
+    font-size: 1.4rem;
+    padding: 0.5rem 0;
+  }
+  
+  .rating span {
+    margin: 0.1rem;
+  }
+  
+  /* carousel */
+  .carousel-item-next,
+  .carousel-item-prev,
+  .carousel-item.active {
+    display: flex;
+  }
+  .carousel-caption {
+    position: absolute;
+    top: 0;
+  }
+  
+  .carousel-caption h2 {
+    color: #fff;
+  }
+  
+  .carousel img {
+    height: 300px;
+    padding: 30px;
+    margin: 40px;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .carousel a {
+    margin: 0 auto;
+  }
+  
+  button {
+    width: 100%;
+  }
+  
+  @media (max-width: 900px) {
+    .carousel-caption h2 {
+      font-size: 2.5vw;
+    }
+  }
+  .footer {
+    background-color: #b289d0;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .footer-content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .footer-content h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .footer-content p {
+    color: white;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .token-earning-rules {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .token-earning-rules h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+  
+  .token-earning-rules h5 {
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .token-earning-rules ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .token-earning-rules p {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .redeem-coupons {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .redeem-coupons h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .coupon-slider {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+  }
+  
+  .coupon-square {
+    flex: 0 0 250px; /* Maintain a fixed size */
+    height: 250px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 7px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Hide overflow */
+  }
+  
+  .coupon-square img {
+    width: 100%; /* Fill the entire coupon square */
+    height: 100%; /* Fill the entire coupon square */
+    object-fit: cover; /* Maintain aspect ratio and cover entire square */
+  }
