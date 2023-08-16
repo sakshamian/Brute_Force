@@ -208,6 +208,7 @@ const ZipCoin = () => {
       const contract = await new window.web3.eth.Contract( abi, smartContractAddress);    
       const address = '0xF516D9Ff45cA573cf3eeBefb2733E9E5e33895D1';
       const data = await contract.methods.balanceOf(address).call();
+      console.log(await contract.methods.transferFrom(address, smartContractAddress, 50).call());
       console.log("data", data);
       console.log(Number(data.toString()));
       dispatch(setToken(Number(data.toString())));
