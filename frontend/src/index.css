@@ -105,7 +105,7 @@ main {
   }
   
   .token-earning-rules p {
-    font-size: 14px;
+    font-size: 17px;
     margin-bottom: 10px;
   }
   .redeem-coupons {
@@ -141,4 +141,96 @@ main {
     width: 100%; /* Fill the entire coupon square */
     height: 100%; /* Fill the entire coupon square */
     object-fit: cover; /* Maintain aspect ratio and cover entire square */
+  }
+  .coupon-popup-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .coupon-popup {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    max-width: 800px;
+    height: 70%;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .coupon-content {
+    display: flex;
+    max-height: 70vh; /* Limit the maximum height of the content */
+  overflow: hidden;
+  }
+  
+  .left-side {
+    flex: 1;
+    max-height: 70vh; /* Limit the maximum height of the content */
+  overflow: hidden;
+  }
+  .left-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+  }
+  .right-side {
+    flex: 1;
+    padding-left: 20px;
+  }
+  
+  .claim-button {
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #333;
+  }
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 2; /* Ensure the close button appears above other content */
+  }
+  
+  .close-icon {
+    font-size: 34px;
+    color: #131313;
+  }
+  .terms-section {
+    margin-top: 20px;
+  }
+  
+  .terms-section h4 {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .terms-section ul {
+    font-size: 12px;
+    list-style-type: disc;
+    padding-left: 20px;
   }
