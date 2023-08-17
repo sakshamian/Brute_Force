@@ -8,6 +8,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { useSelector} from "react-redux";
 import { useGetMyOrdersQuery, useGetOrdersQuery } from "../slices/ordersApiSlice";
+import { selectToken } from "../slices/tokenSlice";
 
 const SuperCoinBalance = ({ coins }) => {
     return (
@@ -27,7 +28,7 @@ const SuperCoinBalance = ({ coins }) => {
     );
   };
   const CoinAct = () => {
-
+    const coins= useSelector(selectToken);
     const { data: orders, isLoading, error } = useGetMyOrdersQuery();
 
     console.log(useGetOrdersQuery());
@@ -38,7 +39,7 @@ const SuperCoinBalance = ({ coins }) => {
         <Row>
       <div className="super-coins-page">
         
-        <SuperCoinBalance coins={superCoinBalance} />
+        <SuperCoinBalance coins={coins} />
 
         
       </div>

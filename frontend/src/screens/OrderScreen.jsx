@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -12,9 +12,14 @@ import {
   useGetPaypalClientIdQuery,
   usePayOrderMutation,
 } from '../slices/ordersApiSlice';
+import { GetBalance, GetTokens } from '../web3/coinServices';
+import { selectToken } from '../slices/tokenSlice';
 
 const OrderScreen = () => {
+  const dispatch = useDispatch();
   const { id: orderId } = useParams();
+  const token = useSelector(selectToken);
+  const navigate = useNavigate();
 
   const {
     data: order,
@@ -71,11 +76,13 @@ const OrderScreen = () => {
   }
 
   // TESTING ONLY! REMOVE BEFORE PRODUCTION
-  async function onApproveTest() {
+  async function onApproveTest(num) {
+    await GetTokens(dispatch, num);
+    await GetBalance(dispatch);
     await payOrder({ orderId, details: { payer: {} } });
     refetch();
-
     toast.success('Order is paid');
+    navigate('/profile');
   }
 
   function onError(err) {
@@ -207,8 +214,14 @@ const OrderScreen = () => {
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
+                  <Col>Discount</Col>
+                  <Col>${Math.min(token, order.itemsPrice)}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
                   <Col>Total</Col>
-                  <Col>${order.totalPrice}</Col>
+                  <Col>${order.totalPrice - Math.min(token, order.itemsPrice/2)}</Col>
                 </Row>
               </ListGroup.Item>
               {!order.isPaid && (
@@ -221,9 +234,9 @@ const OrderScreen = () => {
                     <div>
                       <Button
                         style={{ marginBottom: '10px' }}
-                        onClick={onApproveTest}
+                        onClick={() => onApproveTest(Math.min(token, order.itemsPrice/2))}
                       >
-                        Test Pay Order
+                        Pay Order
                       </Button>
 
                       {/* <div>

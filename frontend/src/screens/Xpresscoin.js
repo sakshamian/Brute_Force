@@ -3,9 +3,8 @@ import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { selectToken, setToken } from '../slices/tokenSlice';
-import abi from '../ABI/tokensABI.json';
-import Web3 from 'web3';
 import { useState } from 'react';
+import { GetBalance, getTokens } from '../web3/coinServices';
 
 const CouponPopup = ({ couponDetails, onClose }) => {
   return (
@@ -172,7 +171,7 @@ const SuperCoinBalance = ({ coins }) => {
   return (
     <div style={{padding:'40px'}} >
  <h4 > 
-  Zip Balance: <span style={{ color: 'orange' }}>{coins}</span>
+  Coin Balance: <span style={{ color: 'orange' }}>{coins}</span>
   <img src="https://rukminim2.flixcart.com/lockin/32/32/images/super_coin_icon_22X22.png?q=90" alt="XCoin Icon" style={{ width: '16px', height: '16px', marginLeft: '5px' }} />
 </h4>       </div>
   );
@@ -197,28 +196,10 @@ const Footer = () => {
 const ZipCoin = () => {
   const dispatch = useDispatch();
 
-  const getTokens = async() => {
-    let account;
-    if(window.ethereum !== "undefined") {
-      const accounts = await window.ethereum.request({method: "eth_requestAccounts"});
-      account = accounts[0];
-      window.web3 = await new Web3(window.ethereum);
-  
-      const smartContractAddress='0x42Dfb1f7FAD81f65a613b60DC525d5FB56cCabf8';
-      const contract = await new window.web3.eth.Contract( abi, smartContractAddress);    
-      const address = '0xF516D9Ff45cA573cf3eeBefb2733E9E5e33895D1';
-      const data = await contract.methods.balanceOf(address).call();
-      console.log(await contract.methods.transferFrom(address, smartContractAddress, 50).call());
-      console.log("data", data);
-      console.log(Number(data.toString()));
-      dispatch(setToken(Number(data.toString())));
-    }
-  }
-
   const coins = useSelector(selectToken);
 
   useEffect(()=>{
-    getTokens();
+    GetBalance(dispatch);
   },[]);
   return (
     <div className="super-coins-page">
