@@ -12,12 +12,14 @@ import {
 import { FaTrash } from 'react-icons/fa';
 import Message from '../components/Message';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
+import { selectToken } from '../slices/tokenSlice';
 
 const CartScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
+  const tokens = useSelector(selectToken);
   const { cartItems } = cart;
 
   // NOTE: no need for an async function here as we are not awaiting the
@@ -96,6 +98,14 @@ const CartScreen = () => {
               {cartItems
                 .reduce((acc, item) => acc + item.qty * item.price, 0)
                 .toFixed(2)}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              - ${Math.min(cartItems
+                  .reduce((acc, item) => acc + item.qty * item.price, 0)
+                  .toFixed(2)/2, tokens)}
+                  {' '}
+              using
+              <img src="https://rukminim2.flixcart.com/lockin/32/32/images/super_coin_icon_22X22.png?q=90" alt="XCoin Icon" style={{ width: '16px', height: '16px', marginLeft: '5px' }} />
             </ListGroup.Item>
             <ListGroup.Item>
               <Button

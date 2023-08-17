@@ -8,8 +8,6 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import Loader from '../components/Loader';
 import { useCreateOrderMutation } from '../slices/ordersApiSlice';
 import { clearCartItems } from '../slices/cartSlice';
-import abi from '../ABI/tokensABI.json';
-import Web3 from 'web3';
 import { selectToken } from '../slices/tokenSlice';
 
 const PlaceOrderScreen = () => {
@@ -39,7 +37,7 @@ const PlaceOrderScreen = () => {
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
-        totalPrice: cart.totalPrice,
+        totalPrice: cart.totalPrice - Math.min(currentPoints, cart.itemsPrice/ 2),
       }).unwrap();
       dispatch(clearCartItems());
       navigate(`/order/${res._id}`);
@@ -130,13 +128,13 @@ const PlaceOrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Discount</Col>
-                  <Col>${currentPoints}</Col>
+                  <Col>${Math.min(currentPoints, cart.itemsPrice/ 2)}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${cart.totalPrice}</Col>
+                  <Col>${cart.totalPrice - Math.min(currentPoints, cart.itemsPrice/ 2)}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
