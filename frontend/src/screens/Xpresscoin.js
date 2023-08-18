@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { selectToken, setToken } from '../slices/tokenSlice';
 import { useState } from 'react';
-import { GetBalance, getTokens } from '../web3/coinServices';
+import { GetBalance } from '../web3/coinServices';
 
 const CouponPopup = ({ couponDetails, onClose }) => {
   return (

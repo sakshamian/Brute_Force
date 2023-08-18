@@ -8,6 +8,7 @@ import FormContainer from '../components/FormContainer';
 import { useRegisterMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
+import { GetBalance, checkConnection } from '../web3/coinServices';
 
 const RegisterScreen = () => {
   const [name, setName] = useState('');
@@ -26,8 +27,13 @@ const RegisterScreen = () => {
   const sp = new URLSearchParams(search);
   const redirect = sp.get('redirect') || '/';
 
+  const getCoins = async() => {
+    const chk2 = await GetBalance(dispatch);
+  }
+
   useEffect(() => {
     if (userInfo) {
+      getCoins();
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);

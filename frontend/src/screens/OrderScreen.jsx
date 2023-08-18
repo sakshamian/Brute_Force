@@ -12,7 +12,7 @@ import {
   useGetPaypalClientIdQuery,
   usePayOrderMutation,
 } from '../slices/ordersApiSlice';
-import { GetBalance, GetTokens } from '../web3/coinServices';
+import { GetBalance, SpendTokens } from '../web3/coinServices';
 import { selectToken } from '../slices/tokenSlice';
 
 const OrderScreen = () => {
@@ -77,7 +77,7 @@ const OrderScreen = () => {
 
   // TESTING ONLY! REMOVE BEFORE PRODUCTION
   async function onApproveTest(num) {
-    await GetTokens(dispatch, num);
+    await SpendTokens(dispatch, num);
     await GetBalance(dispatch);
     await payOrder({ orderId, details: { payer: {} } });
     refetch();
