@@ -7,9 +7,9 @@ import {
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { useSelector} from "react-redux";
-import { useGetMyOrdersQuery, useGetOrdersQuery } from "../slices/ordersApiSlice";
+import { useGetMyOrdersQuery } from "../slices/ordersApiSlice";
 import { selectToken } from "../slices/tokenSlice";
-import { useGetUserDetailsQuery } from "../slices/usersApiSlice";
+// import { useGetUserDetailsQuery } from "../slices/usersApiSlice";
 
 const SuperCoinBalance = ({ coins }) => {
     return (
@@ -64,7 +64,7 @@ const SuperCoinBalance = ({ coins }) => {
                 </tr>
               ))}
               <tr>
-                <td>New User</td>
+                <td>Welcome Bonus</td>
                 <td>2023-08-18</td>
                 <td>+10</td>
               </tr>
