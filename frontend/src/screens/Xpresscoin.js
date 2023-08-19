@@ -4,47 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { selectToken, setToken } from '../slices/tokenSlice';
 import { useState } from 'react';
-import { GetBalance, getTokens } from '../web3/coinServices';
-
-const CouponPopup = ({ couponDetails, onClose }) => {
-  return (
-    <div className="coupon-popup-overlay">
-      <div className="coupon-popup" style={{display:'flex'}}>
-        <button className="close-button" onClick={onClose}>
-          <span className="close-icon">&times;</span>
-        </button>
-        <div className="coupon-content">
-          <div className="left-side">
-            {/* Display coupon image */}
-            <img src={couponDetails.image} alt="Coupon" style={{objectFit:'cover'}}/>
-          </div>
-          <div className="right-side">
-            {/* Display coupon details */}
-            <h3>{couponDetails.title}</h3>
-            <p style={{color:'green'}}> {couponDetails.description}</p>
-            {/* Additional details if needed */}
-            <p>{couponDetails.additionalDetails}</p>
-            <div className="terms-section">
-              <h4>Key Terms & Conditions</h4>
-              <ul>
-                <li>Discount applicable only on select products; check eligible products before claiming the Coupons</li>
-                <li>There will be no refunds of SuperCoins once Coupons is claimed</li>
-                <li>In case of part or full cancellation or return of the order, the discount and SuperCoins will be forfeited</li>
-                <li>For more details, please refer T&Cs</li>
-              </ul>
-            </div>
-            <button className="claim-button">Claim Now</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-
-
-
-
+import { GetBalance, SpendTokens } from '../web3/coinServices';
 
 const TokenEarningRules = () => {
     return (
@@ -114,59 +74,14 @@ const Header = () => {
 
     
     <div style={{padding:'20px'}}>
-                <img style={{width:'100%',height:'100%'}} src='https://img.freepik.com/premium-vector/new-product-social-media-post-template_544391-80.jpg?w=1060' alt='hey'/>
-
+      <img style={{width:'100%',height:'100%'}} src='https://img.freepik.com/premium-vector/new-product-social-media-post-template_544391-80.jpg?w=1060' alt='hey'/>
     </div>
-</div>
+  </div>
 </Container>
     
   );
 };
-const Coupons = () => {
-  const [selectedCoupon, setSelectedCoupon] = useState(null);
 
-  const coupons = [
-     { id: 1, title: '10% Off upto Rs.1000 on Domestic Flight Bookings.', description: '40 Zip coins',image : 'https://media.istockphoto.com/id/935979488/vector/vector-gift-travel-voucher-template-flying-airplane-in-the-sky-banner-coupon-certificate.jpg?s=1024x1024&w=is&k=20&c=swcRqTX75nc24NmXOfTc0nZy9QUFz-DXXV36XDMNlUc=' },
-     { id: 2, title: '12% Off upto Rs.200 on Big basket', description: '10 Zip coins',image : 'https://img.freepik.com/premium-vector/grocery-store-discount-voucher-template-supermarket_606364-830.jpg?w=826' },
-     { id: 3, title: 'Extra Flat 5000 Rs off on next purchases on Electronics with Savings Pass', description: '70 Zip coins',image :'https://previews.123rf.com/images/stacyt13/stacyt131606/stacyt13160600052/59590299-electronics-discount-voucher-templates-bright-sale-banner-with-kitchen-appliances.jpg' },
-     { id: 4, title: 'Extra Rs. 5000 Off On Gaming Console', description: '50 Zip coins',image :'https://www.shutterstock.com/image-vector/digital-voucher-on-smartphone-screen-600w-2284845657.jpg' },
-     { id: 5, title: 'Rs.1500 Off on All Flight Bookings', description: '10 Zip coins' ,image :'https://img.freepik.com/free-vector/cartoon-character-design_1150-46757.jpg?w=826&t=st=1692023622~exp=1692024222~hmac=829b842c940117ae1c9fc18b1c7bd93a6fbc96520a8042e1665277cc8cb72787'},
-     { id: 6, title: 'Upto 70% Off on the next order on Uber Eats', description: '15 Zip coins',image : 'https://media.istockphoto.com/id/842743080/vector/vector-design-gift-voucher-with-arrows-for-the-image.jpg?s=612x612&w=0&k=20&c=SCaqTcn-4GfE70TUHQSYKnW6oDTBfmGO0TRXGWKU3rY='}
-  ];
-
-  const openCouponPopup = (coupon) => {
-    setSelectedCoupon(coupon);
-  };
-
-  const closeCouponPopup = () => {
-    setSelectedCoupon(null);
-  };
-  return(
-      <div className="redeem-coupons">
-    <h2>Redeem Coupons</h2>
-    <div className="coupon-slider ">
-      {/* Add multiple coupon squares here */}
-      <div className="coupon-slider">
-        {coupons.map((coupon) => (
-          <div
-            className="coupon-square"
-            key={coupon.id}
-            onClick={() => openCouponPopup(coupon)}
-          >
-            <img src={coupon.image} alt="Coupon" />
-          </div>
-        ))}
-      
-      {/* Add more coupon squares as needed */}
-  </div>
-  </div>
-  {selectedCoupon && (
-        <CouponPopup couponDetails={selectedCoupon} onClose={closeCouponPopup} />
-      )}
-  </div>
-
-  );
-};
 const SuperCoinBalance = ({ coins }) => {
   return (
     <div style={{padding:'40px'}} >
@@ -197,13 +112,99 @@ const ZipCoin = () => {
   const dispatch = useDispatch();
 
   const coins = useSelector(selectToken);
+  
+  const handleClick = async (num) => {
+    await SpendTokens(dispatch, num);
+    await GetBalance(dispatch);
+  };
 
   useEffect(()=>{
     GetBalance(dispatch);
   },[]);
+
+  const CouponPopup = ({ couponDetails, onClose }) => {
+    return (
+      <div className="coupon-popup-overlay">
+        <div className="coupon-popup" style={{display:'flex'}}>
+          <button className="close-button" onClick={onClose}>
+            <span className="close-icon">&times;</span>
+          </button>
+          <div className="coupon-content">
+            <div className="left-side">
+              {/* Display coupon image */}
+              <img src={couponDetails.image} alt="Coupon" style={{objectFit:'cover'}}/>
+            </div>
+            <div className="right-side">
+              {/* Display coupon details */}
+              <h3>{couponDetails.title}</h3>
+              <p style={{color:'green'}}> {couponDetails.description} coins</p>
+              {/* Additional details if needed */}
+              <p>{couponDetails.additionalDetails}</p>
+              <div className="terms-section">
+                <h4>Key Terms & Conditions</h4>
+                <ul>
+                  <li>Discount applicable only on select products; check eligible products before claiming the Coupons</li>
+                  <li>There will be no refunds of SuperCoins once Coupons is claimed</li>
+                  <li>In case of part or full cancellation or return of the order, the discount and SuperCoins will be forfeited</li>
+                  <li>For more details, please refer T&Cs</li>
+                </ul>
+              </div>
+              <button className="claim-button" onClick={() => handleClick(couponDetails.description)}>Claim Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const Coupons = () => {
+    const [selectedCoupon, setSelectedCoupon] = useState(null);
+  
+    const coupons = [
+       { id: 1, title: '10% Off upto Rs.1000 on Domestic Flight Bookings.', description:40 ,image : 'https://media.istockphoto.com/id/935979488/vector/vector-gift-travel-voucher-template-flying-airplane-in-the-sky-banner-coupon-certificate.jpg?s=1024x1024&w=is&k=20&c=swcRqTX75nc24NmXOfTc0nZy9QUFz-DXXV36XDMNlUc=' },
+       { id: 2, title: '12% Off upto Rs.200 on Big basket', description:10 ,image : 'https://img.freepik.com/premium-vector/grocery-store-discount-voucher-template-supermarket_606364-830.jpg?w=826' },
+       { id: 3, title: 'Extra Flat 5000 Rs off on next purchases on Electronics with Savings Pass', description: '70',image :'https://previews.123rf.com/images/stacyt13/stacyt131606/stacyt13160600052/59590299-electronics-discount-voucher-templates-bright-sale-banner-with-kitchen-appliances.jpg' },
+       { id: 4, title: 'Extra Rs. 5000 Off On Gaming Console', description:50 ,image :'https://www.shutterstock.com/image-vector/digital-voucher-on-smartphone-screen-600w-2284845657.jpg' },
+       { id: 5, title: 'Rs.1500 Off on All Flight Bookings', description:10 ,image :'https://img.freepik.com/free-vector/cartoon-character-design_1150-46757.jpg?w=826&t=st=1692023622~exp=1692024222~hmac=829b842c940117ae1c9fc18b1c7bd93a6fbc96520a8042e1665277cc8cb72787'},
+       { id: 6, title: 'Upto 70% Off on the next order on Uber Eats', description:15 ,image : 'https://media.istockphoto.com/id/842743080/vector/vector-design-gift-voucher-with-arrows-for-the-image.jpg?s=612x612&w=0&k=20&c=SCaqTcn-4GfE70TUHQSYKnW6oDTBfmGO0TRXGWKU3rY='}
+    ];
+  
+    const openCouponPopup = (coupon) => {
+      setSelectedCoupon(coupon);
+    };
+  
+    const closeCouponPopup = () => {
+      setSelectedCoupon(null);
+    };
+    return(
+        <div className="redeem-coupons">
+      <h2>Redeem Coupons</h2>
+      <div className="coupon-slider ">
+        {/* Add multiple coupon squares here */}
+        <div className="coupon-slider">
+          {coupons.map((coupon) => (
+            <div
+              className="coupon-square"
+              key={coupon.id}
+              onClick={() => openCouponPopup(coupon)}
+            >
+              <img src={coupon.image} alt="Coupon" />
+            </div>
+          ))}
+        
+        {/* Add more coupon squares as needed */}
+    </div>
+    </div>
+    {selectedCoupon && (
+          <CouponPopup couponDetails={selectedCoupon} onClose={closeCouponPopup} />
+        )}
+    </div>
+  
+    );
+  };
+
   return (
     <div className="super-coins-page">
-      
       <SuperCoinBalance coins={coins} />
       <Header />
       <Coupons />   

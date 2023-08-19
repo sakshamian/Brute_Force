@@ -35,7 +35,7 @@ const GetBalance= async(dispatch) => {
     }
 };
 
-const GetTokens= async(dispatch, num) => {
+const SpendTokens= async(dispatch, num) => {
     console.log(num);
     let account;
     if(window.ethereum !== "undefined") {
@@ -50,4 +50,4 @@ const GetTokens= async(dispatch, num) => {
     }
 };
 
-export {GetTokens, checkConnection, GetBalance};
+export { checkConnection, GetBalance, SpendTokens};

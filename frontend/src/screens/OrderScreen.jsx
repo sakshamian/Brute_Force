@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import { usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Message from '../components/Message';
@@ -12,7 +12,7 @@ import {
   useGetPaypalClientIdQuery,
   usePayOrderMutation,
 } from '../slices/ordersApiSlice';
-import { GetBalance, GetTokens } from '../web3/coinServices';
+import { GetBalance, SpendTokens } from '../web3/coinServices';
 import { selectToken } from '../slices/tokenSlice';
 
 const OrderScreen = () => {
@@ -63,21 +63,21 @@ const OrderScreen = () => {
     }
   }, [errorPayPal, loadingPayPal, order, paypal, paypalDispatch]);
 
-  function onApprove(data, actions) {
-    return actions.order.capture().then(async function (details) {
-      try {
-        await payOrder({ orderId, details });
-        refetch();
-        toast.success('Order is paid');
-      } catch (err) {
-        toast.error(err?.data?.message || err.error);
-      }
-    });
-  }
+  // function onApprove(data, actions) {
+  //   return actions.order.capture().then(async function (details) {
+  //     try {
+  //       await payOrder({ orderId, details });
+  //       refetch();
+  //       toast.success('Order is paid');
+  //     } catch (err) {
+  //       toast.error(err?.data?.message || err.error);
+  //     }
+  //   });
+  // }
 
   // TESTING ONLY! REMOVE BEFORE PRODUCTION
   async function onApproveTest(num) {
-    await GetTokens(dispatch, num);
+    await SpendTokens(dispatch, num);
     await GetBalance(dispatch);
     await payOrder({ orderId, details: { payer: {} } });
     refetch();
@@ -85,23 +85,23 @@ const OrderScreen = () => {
     navigate('/profile');
   }
 
-  function onError(err) {
-    toast.error(err.message);
-  }
+  // function onError(err) {
+  //   toast.error(err.message);
+  // }
 
-  function createOrder(data, actions) {
-    return actions.order
-      .create({
-        purchase_units: [
-          {
-            amount: { value: order.totalPrice },
-          },
-        ],
-      })
-      .then((orderID) => {
-        return orderID;
-      });
-  }
+  // function createOrder(data, actions) {
+  //   return actions.order
+  //     .create({
+  //       purchase_units: [
+  //         {
+  //           amount: { value: order.totalPrice },
+  //         },
+  //       ],
+  //     })
+  //     .then((orderID) => {
+  //       return orderID;
+  //     });
+  // }
 
   const deliverHandler = async () => {
     await deliverOrder(orderId);
@@ -215,13 +215,13 @@ const OrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Discount</Col>
-                  <Col>${Math.min(token, order.itemsPrice)}</Col>
+                  <Col>${Math.floor(Math.min(token, order.itemsPrice))}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${order.totalPrice - Math.min(token, order.itemsPrice/2)}</Col>
+                  <Col>${order.totalPrice - Math.floor(Math.min(token, order.itemsPrice))}</Col>
                 </Row>
               </ListGroup.Item>
               {!order.isPaid && (
@@ -234,7 +234,7 @@ const OrderScreen = () => {
                     <div>
                       <Button
                         style={{ marginBottom: '10px' }}
-                        onClick={() => onApproveTest(Math.min(token, order.itemsPrice/2))}
+                        onClick={() => onApproveTest(Math.floor(Math.min(token, order.itemsPrice)))}
                       >
                         Pay Order
                       </Button>
