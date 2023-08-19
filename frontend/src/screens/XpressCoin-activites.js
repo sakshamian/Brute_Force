@@ -9,6 +9,7 @@ import Loader from "../components/Loader";
 import { useSelector} from "react-redux";
 import { useGetMyOrdersQuery, useGetOrdersQuery } from "../slices/ordersApiSlice";
 import { selectToken } from "../slices/tokenSlice";
+import { useGetUserDetailsQuery } from "../slices/usersApiSlice";
 
 const SuperCoinBalance = ({ coins }) => {
     return (
@@ -31,10 +32,6 @@ const SuperCoinBalance = ({ coins }) => {
     const coins= useSelector(selectToken);
     const { data: orders, isLoading, error } = useGetMyOrdersQuery();
 
-    console.log(useGetOrdersQuery());
-
-
-    const superCoinBalance = 328; 
     return (
         <Row>
       <div className="super-coins-page">
@@ -66,6 +63,11 @@ const SuperCoinBalance = ({ coins }) => {
                   <td>+{Math.min(Math.floor(order.totalPrice % 15 * 4),40)}</td>
                 </tr>
               ))}
+              <tr>
+                <td>New User</td>
+                <td>2023-08-18</td>
+                <td>+10</td>
+              </tr>
             </tbody>
           </Table>
         )}

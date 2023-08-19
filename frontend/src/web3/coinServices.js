@@ -50,19 +50,4 @@ const SpendTokens= async(dispatch, num) => {
     }
 };
 
-const GetTokens= async(dispatch, num) => {
-    console.log(num);
-    let account;
-    if(window.ethereum !== "undefined") {
-        const accounts = await window.ethereum.request({method: "eth_requestAccounts"});
-        account = accounts[0];
-        window.web3 = await new Web3(window.ethereum);
-        console.log("check");
-        const contract = await new window.web3.eth.Contract( abi, smartContractAddress);
-        const buisnessAddress = '0x08A842834047b9542550af659F8A7315d1839B02';
-        console.log(account);
-        const data = await contract.methods.transfer(account, num).send({ from: buisnessAddress });
-    }
-};
-
-export {GetTokens, checkConnection, GetBalance, SpendTokens};
+export { checkConnection, GetBalance, SpendTokens};

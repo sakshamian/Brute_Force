@@ -21,7 +21,6 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Meta from '../components/Meta';
 import { addToCart } from '../slices/cartSlice';
-import { GetTokens } from '../web3/coinServices';
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
@@ -60,7 +59,6 @@ const ProductScreen = () => {
         comment,
       }).unwrap();
       refetch();
-      GetTokens(dispatch,10);
       toast.success('Review created successfully');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
