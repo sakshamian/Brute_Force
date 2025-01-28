@@ -61,7 +61,7 @@ const Header = () => {
                       <NavDropdown.Item>Profile</NavDropdown.Item>
                     </LinkContainer>
                     <LinkContainer to="/xpresscoin">
-                    <NavDropdown.Item>XCoin Hub</NavDropdown.Item>
+                    <NavDropdown.Item>ZipCoin Hub</NavDropdown.Item>
                   </LinkContainer>
                     <NavDropdown.Item onClick={logoutHandler}>
                       Logout

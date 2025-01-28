@@ -17,7 +17,7 @@ const SuperCoinBalance = ({ coins }) => {
         
       <div style={{padding:'40px'}}>
       <h4>
-  ZipCoin Balance: <span style={{ color: 'orange' }}>{coins}</span>
+  ZipCoin Balance: <span style={{ color: 'orange' }}>{124}</span>
   <img src="https://rukminim2.flixcart.com/lockin/32/32/images/super_coin_icon_22X22.png?q=90" alt="XCoin Icon" style={{ width: '14px', height: '16px', marginLeft: '5px' }} />
 </h4>    
   </div>
